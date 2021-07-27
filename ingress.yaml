@@ -1,0 +1,27 @@
+# apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+  # labels:
+  #   name: web-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/target-node-labels: role=worker
+    # alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+  # - host: web1.demo.com
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          # serviceName: web-svc
+          # servicePort: 80
+          service:
+            name: web-svc
+            port:
+              number: 80
